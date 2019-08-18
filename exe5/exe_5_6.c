@@ -1,7 +1,9 @@
 /**
- * REFERENCES:
- * https://en.wikipedia.org/wiki/C_date_and_time_functions
- **/
+* 
+* REFERENCES:
+* https://en.wikipedia.org/wiki/C_date_and_time_functions
+*
+**/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,8 +12,6 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
-#define PI 3.14159265
 
 double *gaus_seidel2(int ny, int nx, double **Ap, double **Ae, double **Aw, double **An, double **As, double x[], double b[], double tol);
 
@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
     FILE *fd, *fl; //Gravar dados dos resultados
     time_t current_time;
     struct tm *tm_info;
+    
     char cmd[200], //String comando para gnuplot
             c_time_string[100],
             dirname[100],
@@ -35,7 +36,7 @@ int main(int argc, char** argv) {
             dbo = ((argc > 2) ? atoi(argv[2]) : 0),
             nx = ((argc > 3) ? atoi(argv[3]) : 3),
             ny = ((argc > 4) ? atoi(argv[4]) : nx);
-
+   
     double a = 1, //Comprimento da placa
             b = 1, //Altura da placa
             dx = a / nx, //Delta x
@@ -59,9 +60,6 @@ int main(int argc, char** argv) {
             Ta[ny][nx], //Campo de temperaturas solução analítica
             tmax = -9999, //Temperatura máxima
             tol = 1e-10; //Tolerância para os métodos Iterativos
-
-
-
 
     /*DATA ATUAL*/
     current_time = time(NULL);
@@ -90,15 +88,17 @@ int main(int argc, char** argv) {
     #ifdef __linux__
         sprintf(logfilename, "%s/exe5_log.txt", dirname);
     #else
-        //sprintf(logfilename, "D:\\Projetos\\volumes_finitos\\exe5\\%s\\exe5_log.txt", dirname);
-        sprintf(logfilename, "%s\\exe5_log.txt", dirname);
+        sprintf(logfilename, "D:\\Projetos\\volumes_finitos\\exe5\\%s\\exe5_log.txt", dirname);
+        //sprintf(logfilename, "%s\\exe5_log.txt", dirname);
     #endif
+
     printf("%s\n",logfilename);
     fl = fopen(logfilename, "w");
     if (fl == NULL) //if file does not exist, create it
     {
         fl = fopen(logfilename, "wb");
     }
+    
     if (fl == NULL) {
         //return 0;
         dbl = 0;
@@ -141,7 +141,6 @@ int main(int argc, char** argv) {
     fprintf(fl, "\n\t ax: %0.5f \n\t ay: %0.5f", ax, ay);
     fprintf(fl, "\n\t bx: %0.5f \n\t by: %0.5f", bx, by);
     fprintf(fl, "\n\n");
-
 
     /* aloca as linhas da matriz Ap */
     Ap = (double **) calloc(ny, sizeof (double *));
@@ -215,7 +214,6 @@ int main(int argc, char** argv) {
         }
     }
 
-
     /* aloca as linhas da matriz As */
     As = (double **) calloc(ny, sizeof (double *));
     if (As == NULL) {
@@ -265,7 +263,7 @@ int main(int argc, char** argv) {
     An[i][j] = abn;
     As[i][j] = 0;
     Ap[i][j] = 2 * bx * ga / dx + 2 * by * ga / dy;
-    B[0] = q + ro * v * sin(PI * (j * dx + dx / 2) / a) + 2 / dy * sin(PI * (j * dx + dx / 2) / a);
+    B[0] = q + ro * v * sin(M_PI * (j * dx + dx / 2) / a) + 2 / dy * sin(M_PI * (j * dx + dx / 2) / a);
 
     //CANTO INFERIOR DIREITO
     i = ny - 1;
@@ -275,11 +273,11 @@ int main(int argc, char** argv) {
     An[i][j] = abn;
     As[i][j] = 0;
     Ap[i][j] = 2 * bx * ga / dx + 2 * by * ga / dy;
-    B[j] = q + ro * v * sin(PI * (j * dx + dx / 2) / a) + 2 / dy * sin(PI * (j * dx + dx / 2) / a);
+    B[j] = q + ro * v * sin(M_PI * (j * dx + dx / 2) / a) + 2 / dy * sin(M_PI * (j * dx + dx / 2) / a);
 
 
     for (i = 1; i < nx - 1; i++) {
-        B[i] = q + ro * v * sin(PI * (i * dx + dx / 2) / a) + 2 / dy * sin(PI * (i * dx + dx / 2) / a);
+        B[i] = q + ro * v * sin(M_PI * (i * dx + dx / 2) / a) + 2 / dy * sin(M_PI * (i * dx + dx / 2) / a);
     }
 
     //CALCULANDO COEFICIENTES Ae, Aw, An, As e Ap PARA CADA PONTO DA MALHA
@@ -471,9 +469,9 @@ int main(int argc, char** argv) {
     for (i = 0; i < ny; i++) {
         for (j = 0; j < nx; j++) {
             if (i == ny - 1) {
-                Ta[i][j] = sin((PI * (j * dx + dx / 2)) / a);
+                Ta[i][j] = sin((M_PI * (j * dx + dx / 2)) / a);
             } else {
-                Ta[i][j] = (sinh((PI * b) / a) / sinh((PI * ((ny - 1) - i * dy + dy / 2) / a))) * sin((PI * (j * dx + dx / 2)) / a);
+                Ta[i][j] = (sinh((M_PI * b) / a) / sinh((M_PI * ((ny - 1) - i * dy + dy / 2) / a))) * sin((M_PI * (j * dx + dx / 2)) / a);
             }
         }
     }
