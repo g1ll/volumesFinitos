@@ -5,6 +5,8 @@
 *
 **/
 
+#define M_PI 3.14159265358979323846
+#define __FILENAME__ (strrchr(__FILE__, '\\') ? strrchr(__FILE__, '\\') + 1 : __FILE__)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +14,7 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
 
 double *gaus_seidel2(int ny, int nx, double **Ap, double **Ae, double **Aw, double **An, double **As, double x[], double b[], double tol);
 
@@ -83,16 +86,16 @@ int main(int argc, char** argv) {
     }
 
     make_directory(dirname);
-    printf("TESTE2.\n");
+    printf("TESTE2.\n %s",dirname);
    
     #ifdef __linux__
         sprintf(logfilename, "%s/exe5_log.txt", dirname);
     #else
-        sprintf(logfilename, "D:\\Projetos\\volumes_finitos\\exe5\\%s\\exe5_log.txt", dirname);
-        //sprintf(logfilename, "%s\\exe5_log.txt", dirname);
+        //sprintf(logfilename, "D:\\Projetos\\volumes_finitos\\exe5\\%s\\exe5_log.txt", dirname);
+        sprintf(logfilename, "%s\\exe5_log.txt", dirname);
     #endif
 
-    printf("%s\n",logfilename);
+    printf("\n%s\n",logfilename);
     fl = fopen(logfilename, "w");
     if (fl == NULL) //if file does not exist, create it
     {

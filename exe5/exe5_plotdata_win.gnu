@@ -25,7 +25,7 @@ set terminal wxt size 1050,720 enhanced font 'Verdana,10' persist
 # png
 set terminal pngcairo size 1024,720 enhanced font 'Verdana,12'
 print dir
-set output dir."_exe5_plot_colormap.png"
+set output dir."\\exe5_plot_colormap.png"
 
 unset key
 
